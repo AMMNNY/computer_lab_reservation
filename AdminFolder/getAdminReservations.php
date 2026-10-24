@@ -1,3 +1,6 @@
+<?php
+require "fetchReservations.php";
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -90,54 +93,57 @@
                         </tr>
                     </thead>
 
+
                     <tbody>
-                        <tr>
-                            <td>
-                                <div class="user-info">
-                                    <div class="user-avatar">AZ</div>
-                                    <span>Ayman Zahran</span>
-                                </div>
-                            </td>
-                            <td>Computer Lab 1</td>
-                            <td>25 Oct 2026</td>
-                            <td>10:00 - 12:00</td>
-                            <td><span class="status pending">Pending</span></td>
-                            <td>
-                                <div class="actions">
-                                    <button class="approve">Approve</button>
-                                    <button class="reject">Reject</button>
-                                </div>
-                            </td>
-                        </tr>
+                        <?php foreach ($data as $reservation) { ?>
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <div class="user-avatar">
+                                            <?= strtoupper(substr($reservation["full_name"], 0, 2)) ?>
+                                        </div>
+                                        <span><?= htmlspecialchars($reservation["full_name"]) ?></span>
+                                    </div>
+                                </td>
 
-                        <tr>
-                            <td>
-                                <div class="user-info">
-                                    <div class="user-avatar">SK</div>
-                                    <span>Sara Khalil</span>
-                                </div>
-                            </td>
-                            <td>Computer Lab 2</td>
-                            <td>27 Oct 2026</td>
-                            <td>12:00 - 14:00</td>
-                            <td><span class="status approved">Approved</span></td>
-                            <td><span class="no-action">No actions</span></td>
-                        </tr>
+                                <td><?= htmlspecialchars($reservation["lab_name"]) ?></td>
+                                <td><?= htmlspecialchars($reservation["reservation_date"]) ?></td>
+                                <td>
+                                    <?= htmlspecialchars(substr($reservation["start_time"], 0, 5)) ?>
+                                    -
+                                    <?= htmlspecialchars(substr($reservation["end_time"], 0, 5)) ?>
+                                </td>
 
-                        <tr>
-                            <td>
-                                <div class="user-info">
-                                    <div class="user-avatar">OA</div>
-                                    <span>Omar Ali</span>
-                                </div>
-                            </td>
-                            <td>Computer Lab 3</td>
-                            <td>28 Oct 2026</td>
-                            <td>09:00 - 11:00</td>
-                            <td><span class="status rejected">Rejected</span></td>
-                            <td><span class="no-action">No actions</span></td>
-                        </tr>
-                    </tbody>
+                                <td>
+                                    <span class="status <?= htmlspecialchars($reservation["status"]) ?>">
+                                        <?= htmlspecialchars(ucfirst($reservation["status"])) ?>
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <?php if ($reservation["status"] =="pending") { ?>
+                                        <div class="actions">
+                                            <form action="updateReservationStatus.php" method="POST">
+                                                <input type="hidden" name="reservation_id"
+                                                    value="<?= $reservation["reservation_id"] ?>">
+                                                <input type="hidden" name="status" value="approved">
+                                                <button type="submit" class="approve">Approve</button>
+                                            </form>
+
+                                            <form action="updateReservationStatus.php" method="POST">
+                                                <input type="hidden" name="reservation_id"
+                                                    value="<?= $reservation["reservation_id"] ?>">
+                                                <input type="hidden" name="status" value="rejected">
+                                                <button type="submit" class="reject">Reject</button>
+                                            </form>
+                                        </div>
+                                    <?php } else { ?>
+                                        <span class="no-action">No actions</span>
+                                    <?php } ?>
+                                </td>
+                            </tr>
+                        <?php } ?>
+                </tbody>
                 </table>
             </div>
         </section>

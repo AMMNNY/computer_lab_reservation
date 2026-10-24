@@ -27,6 +27,7 @@ require "getReservations.php";
         <div class="profile">
             <div class="profile-icon">U</div>
             <span>User</span>
+            <a href="logout.php"><button >Log-Out</button></a>
         </div>
     </nav>
 
@@ -113,7 +114,7 @@ require "getReservations.php";
             </td>
             <td>
                 <span class="reservation-status <?= htmlspecialchars($reservation["status"]) ?>">
-                    <?= htmlspecialchars(ucfirst($reservation["status"])) ?>
+                    <?= $reservation["status"] == 1 ? "Approved" : "Rejected" ?>
                 </span>
             </td>
             <td>

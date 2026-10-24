@@ -24,7 +24,7 @@
             <a href="manageUsers.php">Users</a>
         </nav>
 
-        <a href="logout.php" class="logout">Logout</a>
+        <a href="logoutAdmin.php"><button >Log-Out</button></a>
     </aside>
 
     <main class="main-content">
